@@ -9,11 +9,18 @@ class BasicCustomUserSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name']
         
 
-class CustomUserSerializer(BasicCustomUserSerializer):
-    class Meta(BasicCustomUserSerializer.Meta):
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
         fields = ['id', 'email', 'first_name', 'last_name', 'password']
         extra_kwargs = {
             'password':{'write_only':True},
             'last_name':{'required':False},
             'first_name':{'required':False},
             }
+
+class PasswordChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['password']
+        extra_kwargs = {'password':{'write_only':True},}
