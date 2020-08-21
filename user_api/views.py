@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from rest_framework import generics
-from .serializers import CustomUserSerializer
+from rest_framework import generics, viewsets
+from .serializers import CustomUserSerializer, BasicCustomUserSerializer
 from .models import CustomUser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -9,7 +9,11 @@ class RegisterUserView(generics.CreateAPIView):
     serializer_class = CustomUserSerializer
     permission_classes = (AllowAny, )
 
-class UserList(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+class CustomUserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
+    def get_serializer_class(self):
+        if self.request.user and self.request.user.is_authenticated:
+            return CustomUserSerializer
+        else:
+            return BasicCustomUserSerializer
