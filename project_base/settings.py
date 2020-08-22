@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_api',
     'rest_framework',
+    'rest_framework.authtoken',
     'oauth2_provider',
 ]
 
@@ -134,3 +135,5 @@ OAUTH2_PROVIDER = {
     # this is the list of available scopes
     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

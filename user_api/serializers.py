@@ -1,7 +1,6 @@
 from .models import CustomUser
 from rest_framework import serializers
-
-
+from .mail import send_activation_email
 
 class BasicCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,6 +17,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'last_name':{'required':False},
             'first_name':{'required':False},
             }
+    def create(self, validate_data):
+        user_instance = super(CustomUserSerializer, self).create(validate_data)
+        send_activation_email(user_instance)
+        return user_instance
 
 class PasswordChangeSerializer(serializers.ModelSerializer):
     class Meta:

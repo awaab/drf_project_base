@@ -9,5 +9,6 @@ router.register(r'users', CustomUserViewSet, basename='user')
 urlpatterns = [
     path('register/', RegisterUserView.as_view()),
     path('change-password/', ChangePasswordView.as_view()),
+    path('activate/', ActivateUserView.as_view()),
     path('', include(router.urls)),
 ]
