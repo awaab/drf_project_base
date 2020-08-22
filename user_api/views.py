@@ -26,7 +26,8 @@ class ActivateUserView(APIView):
             user.is_confirmed = True
             user.save()
             matching_token.delete()
-            return Response({'success': True})
+            serializer = CustomUserSerializer(user)
+            return Response(serializer)
         error_msg = {'success': False, "message": "token field cannot be left blank."}    
         return Response(error_msg, status=400)
 
