@@ -34,7 +34,8 @@ class CustomUserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     def get_serializer_class(self):
-        if self.request.user and self.request.user.is_authenticated:
+        user = self.request.user
+        if user and user.is_authenticated and user.is_confirmed:
             return CustomUserSerializer
         else:
             return BasicCustomUserSerializer
