@@ -17,8 +17,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'last_name':{'required':False},
             'first_name':{'required':False},
             }
-    def create(self, validate_data):
-        user_instance = super(CustomUserSerializer, self).create(validate_data)
+    def create(self, validated_data):
+        password = validated_data["password"]
+        del validated_data["password"]
+        user_instance = self.Meta.model(**validated_data)
+        user_instance.set_password(password)
+        user_instance.save()
         send_activation_email(user_instance)
         return user_instance
 
@@ -26,4 +30,3 @@ class PasswordChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['password']
-        extra_kwargs = {'password':{'write_only':True},}
